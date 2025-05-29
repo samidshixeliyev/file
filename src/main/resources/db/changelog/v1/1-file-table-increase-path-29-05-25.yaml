@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - changeSet:
+     id: 2-modify-image-path-length
+     author: samid
+     changes:
+      - modifyDataType:
+          tableName: file
+          columnName: image_path
+          newDataType: NVARCHAR(5000)

@@ -1,0 +1,13 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2-add-car-id-to-file
+      author: samid
+      changes:
+        - addColumn:
+            tableName: file
+            columns:
+              - column:
+                  name: car_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false

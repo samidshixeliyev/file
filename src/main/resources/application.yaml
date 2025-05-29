@@ -1,0 +1,42 @@
+spring:
+  application:
+    name: file
+  liquibase:
+    change-log: classpath:/db/changelog/changelog-master.yaml
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/file}
+    username: ${SPRING_DATASOURCE_USERNAME:file_user}
+    password: ${SPRING_DATASOURCE_PASSWORD:12345678}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 10MB
+minio:
+  url: ${MINIO_ENDPOINT:http://localhost:9000}
+  access-key: ${MINIO_ACCESS_KEY:admin}
+  secret-key: ${MINIO_SECRET_KEY:admin123}
+  bucket: image
+
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000
+        loggerLevel: basic
+server:
+  port: 8085
+
+client:
+  ms-auth:
+    endpoint: ${MS_AUTH_URL:http://localhost:8082/api/v1}
