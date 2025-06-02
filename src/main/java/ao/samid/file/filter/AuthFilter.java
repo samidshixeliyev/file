@@ -2,6 +2,7 @@ package ao.samid.file.filter;
 
 
 import ao.samid.file.client.AuthClient;
+import ao.samid.file.handler.CustomException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,12 +25,18 @@ public class AuthFilter extends OncePerRequestFilter {
             String bearer = authorization.substring(7);
             try {
                 authClient.checkAccess(bearer);
-                filterChain.doFilter(request, response);
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (CustomException e) {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                response.getWriter().write("Invalid token");
+                response.setContentType("application/json"); // Set the Content-Type header
+                response.setCharacterEncoding("UTF-8"); // Optional but recommended for proper character handling
+                response.getWriter().write("{\n" +
+                        "  \"message\": \"" + e.getMessage() + "\",\n" +
+                        "  \"code\": " + e.getCode() + ",\n" +
+                        "  \"url\":\"" + request.getRequestURI() + "\"\n" +
+                        "}");
+                return;
             }
+            filterChain.doFilter(request, response);
         } else {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);}
     }
