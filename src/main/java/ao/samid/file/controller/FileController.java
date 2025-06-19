@@ -3,6 +3,7 @@ package ao.samid.file.controller;
 import ao.samid.file.dto.response.FileResponse;
 import ao.samid.file.service.FileService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,8 +28,8 @@ public class FileController {
     public ResponseEntity<List<FileResponse>> getFilesByCarId(@PathVariable Long id) {
         return ResponseEntity.ok().body(fileService.getFilesByCarId(id));
     }
-    @GetMapping("/download/{id}")
-    public ResponseEntity<InputStream> downLoadFile(@PathVariable Long id) {
+    @GetMapping(value = "/download/{id}")
+    public ResponseEntity<byte[]> downLoadFile(@PathVariable Long id) {
         return ResponseEntity.ok(fileService.downloadFile(id));
     }
     @GetMapping("/url/{id}")

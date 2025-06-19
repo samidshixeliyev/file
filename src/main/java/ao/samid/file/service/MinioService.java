@@ -8,10 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
-
 @Service
 @RequiredArgsConstructor
 public class MinioService {
@@ -40,13 +36,13 @@ public class MinioService {
         }
     }
 
-    public InputStream downloadFile(String fileName) {
+    public byte[] downloadFile(String fileName) {
         try {
             return minioClient.getObject(
                     GetObjectArgs.builder()
                             .bucket(minioConfigProperties.getBucket())
                             .object(fileName)
-                            .build());
+                            .build()).readAllBytes();
         } catch (Exception e) {
             throw new RuntimeException("Error downloading file from MinIO: " + e.getMessage());
         }

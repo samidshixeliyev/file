@@ -10,6 +10,7 @@ import lombok.Setter;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.util.List;
 
@@ -28,6 +29,8 @@ public class FileService {
                         .imagePath(minioService.getFileUrl(image.getImageName()))
                         .contentType(image.getContentType())
                         .carId(image.getCarId())
+                        .createdAt(image.getCreatedAt())
+                        .updatedAt(image.getUpdatedAt())
                         .build()).toList();
     }
     public void deleteFileById(Long id) {
@@ -54,7 +57,7 @@ public class FileService {
                 .contentType(request.getContentType())
                 .build();
     }
-    public InputStream downloadFile(Long id) {
+    public byte[] downloadFile(Long id) {
         File file = fileRepository.findById(id).orElseThrow(() -> new RuntimeException("File not found"));
         return minioService.downloadFile(file.getImageName());
     }
@@ -67,9 +70,5 @@ public class FileService {
             minioService.deleteFile(file.getImageName());
             fileRepository.delete(file);
         });
-
     }
-
-
-
 }

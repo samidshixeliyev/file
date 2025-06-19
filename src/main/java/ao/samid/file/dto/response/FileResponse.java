@@ -3,6 +3,7 @@ package ao.samid.file.dto.response;
 import lombok.*;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 
 @AllArgsConstructor
@@ -16,7 +17,7 @@ public class FileResponse implements Serializable {
     private String imagePath;
     private String imageName;
     private String contentType;
-    private String createdAt;
-    private String updatedAt;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
 }
